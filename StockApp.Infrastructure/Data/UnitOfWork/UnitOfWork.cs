@@ -1,4 +1,5 @@
 ﻿using StockApp.Application.Common.Interfaces;
+using StockApp.Domain.Entities;
 using StockApp.Infrastructure.Data.Repositories;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,21 @@ namespace StockApp.Infrastructure.Data.UnitOfWork
         private bool disposed = false;
         private readonly ApplicationDbContext _context;
 
+    
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
 
+
+        private IRepositoryBase<Stock> _stockRepo;
+
+        public IRepositoryBase<Stock> StockRepo => _stockRepo ?? new RepositoryBase<Stock>(_context);
+
+        private IRepositoryBase<Order> _orderRepo;
+
+        public IRepositoryBase<Order> OrderRepo => _orderRepo ?? new RepositoryBase<Order>(_context);
 
 
         public async Task<bool> SaveAsync()

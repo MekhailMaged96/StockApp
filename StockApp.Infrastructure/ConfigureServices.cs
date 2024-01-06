@@ -31,9 +31,9 @@ namespace StockApp.Infrastructure
             {
                 opt.Password.RequireNonAlphanumeric = false;
             })
-               .AddRoles<IdentityRole>()
-               .AddRoleManager<RoleManager<IdentityRole>>()
-               .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddRoles<IdentityRole>()
+            .AddRoleManager<RoleManager<IdentityRole>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
             return services;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StockApp.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace StockApp.Application.Common.Interfaces
 {
     public interface IUnitOfWork
     {
+
+        IRepositoryBase<Stock> StockRepo { get; }
+        IRepositoryBase<Order> OrderRepo { get; }
+
         Task<bool> SaveAsync();
     }
 }

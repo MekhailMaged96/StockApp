@@ -9,5 +9,6 @@ namespace StockApp.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+        ICollection<Order> Orders { get; set; }
     }
 }

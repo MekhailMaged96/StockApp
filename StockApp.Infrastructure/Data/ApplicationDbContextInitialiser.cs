@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace StockApp.Infrastructure.Data
@@ -40,7 +41,7 @@ namespace StockApp.Infrastructure.Data
         {
             try
             {
-             
+                await SeedStocks();
             }
             catch (Exception ex)
             {
@@ -48,5 +49,36 @@ namespace StockApp.Infrastructure.Data
                 throw;
             }
         }
+
+        private async Task SeedStocks()
+        {
+
+
+            if (await _context.Stocks.AnyAsync())
+                return;
+
+           
+            var stockData = await File.ReadAllTextAsync("Data/StockSeedData.json");
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            var stocks = JsonSerializer.Deserialize<List<Stock>>(stockData, options);
+            Random random = new Random();
+
+            foreach (var stock in stocks)
+            {
+
+                 stock.SetRandomPrice();
+                _context.Add(stock);
+            }
+
+                
+             await _context.SaveChangesAsync();
+
+
+        }
+
+
+
     }
 }
