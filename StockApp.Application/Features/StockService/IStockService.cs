@@ -12,5 +12,7 @@ namespace StockApp.Application.Features.StockService
         Task<IReadOnlyCollection<Stock>> GetAll();
 
         Task<Stock> GetStockById(int Id);
+
+        Task<IEnumerable<Stock>> UpdateAllStocksPrice();
     }
 }

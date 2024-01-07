@@ -26,5 +26,21 @@ namespace StockApp.Application.Features.StockService
         {
             return await _unitOfWork.StockRepo.GetByIdAsync(Id);
         }
+
+        public async Task<IEnumerable<Stock>> UpdateAllStocksPrice()
+        {
+            var stocks = await _unitOfWork.StockRepo.GetAllAsync();
+
+            foreach (var stock in stocks)
+            {
+                 stock.SetRandomPrice();
+                _unitOfWork.StockRepo.Update(stock);
+            }
+
+            await _unitOfWork.SaveAsync();
+
+
+            return stocks;
+        }
     }
 }

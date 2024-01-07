@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StockApp.Domain.Entities;
 using Microsoft.Extensions.Configuration;
+using StockApp.Infrastructure.BackgroundServices;
 
 namespace StockApp.Infrastructure
 {
@@ -34,6 +35,10 @@ namespace StockApp.Infrastructure
             .AddRoles<IdentityRole>()
             .AddRoleManager<RoleManager<IdentityRole>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddHostedService<BackgroundUpdaterService>();
+
+            services.AddSignalR(); 
 
             return services;
         }

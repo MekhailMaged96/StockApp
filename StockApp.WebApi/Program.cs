@@ -1,5 +1,6 @@
 using StockApp.Application;
 using StockApp.Infrastructure;
+using StockApp.Infrastructure.Hubs;
 using StockApp.WebApi.Extensions;
 using StockApp.WebApi.Middlewares;
 
@@ -28,9 +29,22 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
+app.UseRouting();
+
+app.UseAuthentication();
+
 app.UseAuthorization();
 
-app.MapControllers();
+
+
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<StockHub>("/stockHub");
+    endpoints.MapControllers();
+});
+
 
 await app.InitialiseDatabaseAsync();
 

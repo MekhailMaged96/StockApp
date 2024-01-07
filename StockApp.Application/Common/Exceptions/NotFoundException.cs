@@ -10,7 +10,7 @@ namespace StockApp.Application.Common.Exceptions
     {
         public NotFoundException(string message) : base(message)
         {
-
+            
         }
     }
 }
