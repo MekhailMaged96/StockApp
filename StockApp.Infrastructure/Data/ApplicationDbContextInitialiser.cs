@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using StockApp.Application.DTOS;
 using StockApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,13 +15,15 @@ namespace StockApp.Infrastructure.Data
 {
     public class ApplicationDbContextInitialiser
     {
+        private readonly IMapper _mapper;
         private ILogger<ApplicationDbContextInitialiser> _logger;
         private ApplicationDbContext _context;
         private UserManager<ApplicationUser> _userManager;
         private RoleManager<IdentityRole> _roleManager;
 
-        public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public ApplicationDbContextInitialiser(IMapper mapper,ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _mapper = mapper;
             _logger = logger;
             _context = context;
             _userManager = userManager;
@@ -41,13 +45,43 @@ namespace StockApp.Infrastructure.Data
         {
             try
             {
+                await SeedUser();
                 await SeedStocks();
+               
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while seeding the database.");
                 throw;
             }
+        }
+        private async Task SeedUser()
+        {
+
+
+            if (await _userManager.Users.AnyAsync())
+                return;
+
+
+            var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
+
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+            var users = JsonSerializer.Deserialize<List<UserDTO>>(userData, options);
+
+            foreach (var user in users)
+            {
+                var appuser = new ApplicationUser()
+                {
+                    UserName = user.UserName,
+                    Email = user.Email
+                };
+
+                await _userManager.CreateAsync(appuser, user.Password);
+
+            }
+
+
         }
 
         private async Task SeedStocks()

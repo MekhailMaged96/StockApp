@@ -15,7 +15,7 @@ namespace StockApp.Application.Mappings
         public MappingProfile()
         {
             CreateMap<CreateUserDTO, ApplicationUser>().ReverseMap();
-
+            CreateMap<UserDTO, ApplicationUser>().ReverseMap();
             CreateMap<Stock, StockDTO>().ReverseMap();
 
             CreateMap<Order, OrderDTO>().ReverseMap();
