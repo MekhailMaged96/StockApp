@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using StockApp.Application.Common.Interfaces;
 using StockApp.Application.Features.StockService;
 using Microsoft.AspNetCore.Authorization;
+using StockApp.Application.Common.Constants;
 
 namespace StockApp.Infrastructure.Hubs
 {
@@ -25,14 +26,20 @@ namespace StockApp.Infrastructure.Hubs
         {
 
 
-           // await Clients.All.SubscribeToHub("Test");
+
+            // await Clients.All.SubscribeToHub("Test");
+        }
+
+        public async Task JoinStocksGroup()
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId,GroupsConstants.StockGroup);
         }
 
         public async Task GetAllStocksPrices()
         {
             var stocks=  await _stockService.UpdateAllStocksPrice();
 
-            await Clients.All.NotifyAllStocksPrices(stocks);
+            await Clients.Groups(GroupsConstants.StockGroup).NotifyAllStocksPrices(stocks);
 
         }
 

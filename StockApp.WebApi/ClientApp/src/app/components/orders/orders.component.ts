@@ -21,6 +21,7 @@ export class OrdersComponent implements OnInit, OnDestroy {
     private ordersService: OrdersService
   ) {
     this.signalRService.startConnection();
+
     this.signalRService.addUpdatedStocksListener((response) => {});
 
     this.getAddOrUpdatedOrder();

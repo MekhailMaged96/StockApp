@@ -22,7 +22,7 @@
                   {{auth.getUserName()}}
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown" *dropdownMenu>
-                  <li><a class="dropdown-item pointer">Action</a></li>
+                  <li><a class="dropdown-item pointer" [routerLink]="['/orders']">Orders</a></li>
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item pointer"  (click)="logout()">Logout</a></li>
                 </ul>

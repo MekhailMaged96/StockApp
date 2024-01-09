@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountService } from 'src/app/services/account/account.service';
 
@@ -21,8 +21,8 @@ export class LoginComponent implements OnInit {
 
   createForm() {
     this.loginForm = this.fb.group({
-      username: [],
-      password: [],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
@@ -36,5 +36,8 @@ export class LoginComponent implements OnInit {
           this.router.navigateByUrl('/home');
         });
     }
+  }
+  get loginFormControls() {
+    return this.loginForm.controls;
   }
 }

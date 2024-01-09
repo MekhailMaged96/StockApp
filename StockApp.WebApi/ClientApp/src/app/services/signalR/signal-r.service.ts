@@ -24,11 +24,18 @@ export class SignalRService {
         })
         .withAutomaticReconnect()
         .build();
+
       this.hubConnection
         .start()
-        .then(() => console.log('Connection started'))
+        .then(() => this.joinStocksGroup())
         .catch((err) => console.log('Error while starting connection: ' + err));
     }
+  }
+
+  joinStocksGroup(): void {
+    this.hubConnection
+      ?.invoke('joinStocksGroup')
+      .catch((err) => console.error('Error while joining group:', err));
   }
 
   addUpdatedStocksListener(callback: (stocks: any) => void) {

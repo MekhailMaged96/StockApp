@@ -1,8 +1,9 @@
 import { CommuncationService } from './../../../services/internal/communcation.service';
 import { Component, Input, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { PaginationResult } from 'src/app/models/PaginationResult';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { OrdersService } from 'src/app/services/orders/orders.service';
 import { StocksService } from 'src/app/services/stocks/stocks.service';
@@ -29,17 +30,22 @@ export class CreateUpdateOrderComponent implements OnInit {
   }
 
   getAllStocks() {
-    this.stocksService.getAll().subscribe((response) => {
-      this.stocks = response;
-      console.log(this.stocks);
-    });
+    this.stocksService
+      .getWithPagination(-1)
+      .subscribe((response: PaginationResult) => {
+        this.stocks = response.items;
+        console.log(this.stocks);
+      });
   }
 
   createForm() {
     this.orderForm = this.fb.group({
-      stockId: [],
-      quantity: [],
+      stockId: ['', Validators.required],
+      quantity: ['', Validators.required],
     });
+  }
+  get orderFormControls() {
+    return this.orderForm.controls;
   }
 
   onSave() {

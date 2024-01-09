@@ -14,16 +14,22 @@
                         <option selected>Open this select menu</option>
                         <option  *ngFor="let stock of stocks" [ngValue]=stock.id >{{stock.name}}</option>
                     </select>
+                    <div *ngIf="orderFormControls['stockId'].hasError('required') && orderFormControls['stockId'].touched" class="text-danger">
+                        Stock is required.
+                      </div>
                 </div>
                 <div class="mb-3">
                     <label for="Quantity">Quantity</label>
                     <input formControlName="quantity"  type="number" class="form-control" id="Quantity" placeholder="Quantity" name="quantity">
+                    <div *ngIf="orderFormControls['quantity'].hasError('required') && orderFormControls['quantity'].touched" class="text-danger">
+                        Quantity is required.
+                      </div>
                 </div>
             </form>
           </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="modalRef?.hide()">Close</button>
-            <button type="button" class="btn btn-primary" (click)="onSave()" type="submit">Save</button>
+            <button type="button" class="btn btn-primary" (click)="onSave()" [disabled]="!orderForm.valid" type="submit">Save</button>
         </div>
 
 

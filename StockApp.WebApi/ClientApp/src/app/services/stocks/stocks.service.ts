@@ -12,7 +12,7 @@ export class StocksService {
     return this.dataService.get('/stock/getall', 'application/json');
   }
 
-  getWithPagination(pageNumber: number, pageSize: number, param?: any) {
+  getWithPagination(pageNumber: number, pageSize: number = 10, param?: any) {
     return this.dataService.getWithPagination(
       '/stock/getall',
       'application/json',

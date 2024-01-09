@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StockApp.Application.Common.Constants;
 using StockApp.Application.Common.Interfaces.SignalR;
 using StockApp.Application.Features.StockService;
 using StockApp.Infrastructure.Hubs;
@@ -45,7 +46,7 @@ namespace StockApp.Infrastructure.BackgroundServices
                 var context = scope.ServiceProvider.GetRequiredService<IHubContext<StockHub, IStockHub>>();
 
                 var stocks = await stockService.UpdateAllStocksPrice();
-                await context.Clients.All.NotifyAllStocksPrices(stocks);
+                await context.Clients.Groups(GroupsConstants.StockGroup).NotifyAllStocksPrices(stocks);
 
 
             }
