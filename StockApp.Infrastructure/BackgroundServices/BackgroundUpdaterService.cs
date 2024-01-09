@@ -30,9 +30,9 @@ namespace StockApp.Infrastructure.BackgroundServices
             {
 
 
-                await UpdateStockPriceInBackground();
+             await UpdateStockPriceInBackground();
 
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+             await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
             }
         }
 

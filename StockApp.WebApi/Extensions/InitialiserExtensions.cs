@@ -4,6 +4,9 @@ namespace StockApp.WebApi.Extensions
 {
     public static class InitialiserExtensions
     {
+
+
+
         public static async Task InitialiseDatabaseAsync(this WebApplication app)
         {
             using var scope = app.Services.CreateScope();

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StockApp.Infrastructure.Data.Repositories
 {
@@ -21,6 +22,20 @@ namespace StockApp.Infrastructure.Data.Repositories
             dbSet = dbContext.Set<T>();
         }
 
+        public IQueryable<T> GetAllRelatedEntities(string includeProperties = "")
+        {
+            IQueryable<T> query = dbSet;
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' },
+                    StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+            return query;
+        }
         public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await dbSet.AsNoTracking().ToListAsync();
@@ -31,6 +46,30 @@ namespace StockApp.Infrastructure.Data.Repositories
             return await dbSet.Where(predicate).ToListAsync();
         }
 
+        public virtual IEnumerable<T> Get( Expression<Func<T, bool>> filter = null,  Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        {
+            IQueryable<T> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
+        }
         public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeString = null, bool disableTracking = true)
         {
             IQueryable<T> query = dbSet;
@@ -80,5 +119,7 @@ namespace StockApp.Infrastructure.Data.Repositories
         {
             dbSet.Remove(entity);
         }
+
+   
     }
 }

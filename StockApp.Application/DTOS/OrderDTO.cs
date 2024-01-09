@@ -12,6 +12,7 @@ namespace StockApp.Application.DTOS
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public int StockId { get; set; }
+        public StockDTO Stock { get; set; }
         public string UserId { get; set; }
         public DateTimeOffset CreatedAt { get; set; }
         public string? CreatedBy { get; set; }

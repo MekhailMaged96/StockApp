@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using StockApp.Application.Common.Models;
 using StockApp.Application.DTOS;
 using StockApp.Domain.Entities;
 using System;
@@ -19,6 +20,9 @@ namespace StockApp.Application.Mappings
 
             CreateMap<Order, OrderDTO>().ReverseMap();
 
+            CreateMap(typeof(PagedList<>), typeof(PagedListDto<>))
+             .ForMember("Items", opt => opt.MapFrom(src => src));
+      
 
         }
     }

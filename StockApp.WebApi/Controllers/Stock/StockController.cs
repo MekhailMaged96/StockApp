@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.DTOS;
@@ -6,7 +7,7 @@ using StockApp.Application.Features.StockService;
 
 namespace StockApp.WebApi.Controllers.Stock
 {
-
+    [Authorize]
     public class StockController : BaseController
     {
         private readonly IStockService _stockService;
@@ -18,14 +19,14 @@ namespace StockApp.WebApi.Controllers.Stock
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("GetAll")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(StockListDTO param)
         {
 
-            var response =await _stockService.GetAll();
+            var response =await _stockService.GetAll(param);
 
-            return Ok(_mapper.Map<List<StockDTO>>(response));
+            return Ok(_mapper.Map<PagedListDto<StockDTO>>(response));
         }
         
         

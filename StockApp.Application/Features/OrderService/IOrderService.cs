@@ -13,5 +13,7 @@ namespace StockApp.Application.Features.OrderService
         public Task<IEnumerable<Order>> GetAll();
 
         public Task<Order> CreateOrder(CreateOrderDTO createOrder);
+
+        public Task<Order> GetOrderById(int Id);
     }
 }

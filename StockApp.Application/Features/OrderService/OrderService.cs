@@ -9,6 +9,7 @@ using StockApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +22,7 @@ namespace StockApp.Application.Features.OrderService
         private readonly IAccountService _accountService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public OrderService(IStockService stockService,IMapper mapper,IAccountService accountService,IUnitOfWork unitOfWork)
+        public OrderService(IStockService stockService, IMapper mapper, IAccountService accountService, IUnitOfWork unitOfWork)
         {
             _stockService = stockService;
             _mapper = mapper;
@@ -32,7 +33,7 @@ namespace StockApp.Application.Features.OrderService
         {
             var stock = await _stockService.GetStockById(createOrder.StockId);
 
-            if(stock == null)
+            if (stock == null)
             {
                 throw new NotFoundException("Stock is not found");
             }
@@ -44,7 +45,7 @@ namespace StockApp.Application.Features.OrderService
                 throw new NotFoundException("User is not found");
             }
 
-            var order = new Order(stock,createOrder.Quantity.Value,createOrder.Price.Value,appUser);
+            var order = new Order(stock, createOrder.Quantity.Value, stock.Price, appUser);
             order.CreatedBy = appUser.UserName;
 
             await _unitOfWork.OrderRepo.AddAsync(order);
@@ -56,7 +57,20 @@ namespace StockApp.Application.Features.OrderService
 
         public async Task<IEnumerable<Order>> GetAll()
         {
-            return await _unitOfWork.OrderRepo.GetAllAsync();
+        
+          return await _unitOfWork.OrderRepo.GetAsync(includeString:"Stock");
+        }
+
+        public async Task<Order> GetOrderById(int Id)
+        {
+            var order = _unitOfWork.OrderRepo.Get(e=>e.Id ==Id,null,"Stock").FirstOrDefault() ;
+
+            if(order == null)
+            {
+                throw new NotFoundException("Order Not Found");
+            }
+
+            return await Task.FromResult(order);
         }
     }
 }

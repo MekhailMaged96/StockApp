@@ -15,6 +15,8 @@ namespace StockApp.Application
             services.AddScoped<IStockService, StockService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ITokenService, TokenService>();
+      
+
 
             services.AddAutoMapper(typeof(MappingProfile));
             return services;

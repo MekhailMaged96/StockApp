@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Options;
 using StockApp.Application;
 using StockApp.Infrastructure;
 using StockApp.Infrastructure.Hubs;
+using StockApp.WebApi;
 using StockApp.WebApi.Extensions;
 using StockApp.WebApi.Middlewares;
 
@@ -13,10 +15,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddWebServices(builder.Configuration);
+
 
 var app = builder.Build();
+
+
 
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
@@ -27,23 +34,21 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
-
 app.UseRouting();
+
+app.UseCors("CorsPolicy");
+
+
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 
+app.MapControllers();
 
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<StockHub>("/stockHub");
-    endpoints.MapControllers();
-});
+app.MapHub<StockHub>("/hubs/stockHub");
 
 
 await app.InitialiseDatabaseAsync();

@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-md-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                  <div class="d-flex justify-content-between">
+                        <span class="align-self-center">Orders List</span>
+                        <button class="btn btn-primary" (click)="openModal()">Create Order</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Person Name</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let order of orders">
+                            <td>{{order?.id}}</td>
+                            <td>{{order?.stock?.name}}</td>
+                            <td>{{order?.price}}</td>
+                            <td>{{order?.quantity}}</td>
+                            <td>{{order?.createdBy}}</td>
+                            </tr>
+                        </tbody>
+                      </table> 
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-12">
+            <stocks></stocks>
+        </div>
+    </div>
+</div>
+
+

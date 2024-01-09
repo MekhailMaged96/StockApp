@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.Common.Exceptions;
@@ -8,7 +9,8 @@ using StockApp.Application.Features.OrderService;
 namespace StockApp.WebApi.Controllers.Order
 {
 
- 
+
+    [Authorize]
     public class OrderController : BaseController
     {
         private readonly IOrderService _orderService;
@@ -21,7 +23,20 @@ namespace StockApp.WebApi.Controllers.Order
         }
 
         [HttpGet]
+        [Route("{id}")]
+        
+        public async Task<IActionResult> GetOrder(int Id)
+        {
+
+
+            var order = await _orderService.GetOrderById(Id);
+
+            return Ok(_mapper.Map<OrderDTO>(order));
+        }
+
+        [HttpGet]
         [Route("GetAll")]
+ 
         public async Task<IActionResult> GetAll()
         {
 

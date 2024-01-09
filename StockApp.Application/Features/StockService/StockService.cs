@@ -1,10 +1,13 @@
 ﻿using StockApp.Application.Common.Interfaces;
+using StockApp.Application.Common.Models;
+using StockApp.Application.DTOS;
 using StockApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace StockApp.Application.Features.StockService
 {
@@ -17,9 +20,15 @@ namespace StockApp.Application.Features.StockService
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<IReadOnlyCollection<Stock>> GetAll()
+        public async Task<PagedList<Stock>> GetAll(StockListDTO param)
         {
-            return await _unitOfWork.StockRepo.GetAllAsync();
+            var query = _unitOfWork.StockRepo.GetAllRelatedEntities();
+
+
+            var stocks = await PagedList<Stock>.CreateAsync(query, param.PageNumber, param.PageSize);
+
+            return stocks;
+
         }
 
         public async Task<Stock> GetStockById(int Id)

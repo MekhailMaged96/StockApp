@@ -13,12 +13,17 @@ namespace StockApp.Application.Common.Interfaces
     {
         public Task<IReadOnlyList<T>> GetAllAsync();
 
+        public IQueryable<T> GetAllRelatedEntities(string includeProperties = "");
+
+
         public Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate);
 
         public Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>>?predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, string includeString = null, bool disableTracking = true);
 
         public Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>,
             IOrderedQueryable<T>>? orderBy = null, List<Expression<Func<T, object>>>? includes = null, bool disableTracking = true);
+
+        public IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "");
 
         public Task<T> GetByIdAsync(int id);
 

@@ -1,4 +1,6 @@
-﻿using StockApp.Domain.Entities;
+﻿using StockApp.Application.Common.Models;
+using StockApp.Application.DTOS;
+using StockApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +11,7 @@ namespace StockApp.Application.Features.StockService
 {
     public interface IStockService
     {
-        Task<IReadOnlyCollection<Stock>> GetAll();
+        Task<PagedList<Stock>> GetAll(StockListDTO param);
 
         Task<Stock> GetStockById(int Id);
 

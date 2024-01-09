@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using StockApp.Application.Common.Interfaces;
 using StockApp.Application.Features.StockService;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StockApp.Infrastructure.Hubs
 {
-    
+    [Authorize]   
     public sealed class StockHub : Hub<IStockHub>
     { 
         private readonly IStockService _stockService;
@@ -24,7 +25,7 @@ namespace StockApp.Infrastructure.Hubs
         {
 
 
-            await Clients.All.SubscribeToHub("Test");
+           // await Clients.All.SubscribeToHub("Test");
         }
 
         public async Task GetAllStocksPrices()

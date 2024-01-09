@@ -11,8 +11,6 @@ namespace StockApp.Application.DTOS
     public class CreateOrderDTO
     {
         [Required]
-        public decimal? Price { get; set; }
-        [Required]
         public int? Quantity { get; set; }
         public int StockId { get; set; }
         public string UserId { get; set; }
