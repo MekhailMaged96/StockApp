@@ -8,7 +8,8 @@
    <li>Navigate to Orders Page</li>
    <li>you will find orders list and stocks list</li>
    <li>stocks list are updated every 10 seconds </li>
-   <li>you can create an order on the same page</li> 
+   <li>you can create an order on the same page</li>
+   <li>you will find the angular app in the ClientApp folder under StockApp.WebApi project  </li> 
 </ul>
  
 ### Tools :  
