@@ -97,7 +97,7 @@ namespace StockApp.Infrastructure.Data
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
             var stocks = JsonSerializer.Deserialize<List<Stock>>(stockData, options);
-            Random random = new Random();
+
 
             foreach (var stock in stocks)
             {

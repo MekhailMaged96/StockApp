@@ -1,6 +1,7 @@
 ﻿using StockApp.Domain.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,11 @@ namespace StockApp.Domain.Entities
             Stock = stock;
             StockId = stock.Id;
             Quantity = quantity;
-            Price = price;
+            Price = price *quantity;
             UserId =user.Id;
             User = user;
         }
+
+       
     }
 }

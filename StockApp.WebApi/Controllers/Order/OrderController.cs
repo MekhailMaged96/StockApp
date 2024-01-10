@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Application.Common.Exceptions;
+using StockApp.Application.Common.Interfaces;
 using StockApp.Application.DTOS;
 using StockApp.Application.Features.OrderService;
 
@@ -15,11 +16,13 @@ namespace StockApp.WebApi.Controllers.Order
     {
         private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
 
-        public OrderController(IOrderService orderService,IMapper  mapper)
+        public OrderController(IOrderService orderService,IMapper  mapper, ICurrentUserService currentUserService)
         {
             _orderService = orderService;
             _mapper = mapper;
+            _currentUserService = currentUserService;
         }
 
         [HttpGet]
@@ -50,7 +53,10 @@ namespace StockApp.WebApi.Controllers.Order
         [Route("Create")]
         public async Task<IActionResult> CreateOrder(CreateOrderDTO createOrder)
         {
-            
+            if(createOrder.UserId != _currentUserService.UserId)
+            {
+                return Unauthorized();
+            }   
 
             var order = await _orderService.CreateOrder(createOrder);
 

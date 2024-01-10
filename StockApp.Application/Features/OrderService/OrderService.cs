@@ -19,18 +19,21 @@ namespace StockApp.Application.Features.OrderService
     {
         private readonly IStockService _stockService;
         private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUserService;
         private readonly IAccountService _accountService;
         private readonly IUnitOfWork _unitOfWork;
 
-        public OrderService(IStockService stockService, IMapper mapper, IAccountService accountService, IUnitOfWork unitOfWork)
+        public OrderService(IStockService stockService, IMapper mapper,ICurrentUserService currentUserService, IAccountService accountService, IUnitOfWork unitOfWork)
         {
             _stockService = stockService;
             _mapper = mapper;
+            _currentUserService = currentUserService;
             _accountService = accountService;
             _unitOfWork = unitOfWork;
         }
         public async Task<Order> CreateOrder(CreateOrderDTO createOrder)
         {
+           
             var stock = await _stockService.GetStockById(createOrder.StockId);
 
             if (stock == null)

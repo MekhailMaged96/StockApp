@@ -21,6 +21,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ErrorInterceptor } from './interceptors/error/error';
 import { TokenInterceptor } from './interceptors/token/token.interceptor';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +31,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
     StocksComponent,
     LoginComponent,
     CreateUpdateOrderComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
